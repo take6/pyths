@@ -21,16 +21,22 @@ def date2str(date=TODAY):
         return datestr
 
 
-
 def get_program_contents(date=TODAY, area=TOKYO):
     program_url = 'https://tv.yahoo.co.jp/listings'
 
     datestring = date2str(date)
 
+    area_id = AREA_MAP.get(area, None)
+
+    assert area_id is not None
+
     payload = {
         'va': '24',  # 24時間表示
-        '0':  # 番組詳細を表示しない
+        'vd': '0',  # 番組詳細を表示しない
         'd': datestring,
         'a': area_id
     }
 
+    contents = requests.get(program_url, params=payload)
+
+    return contents
