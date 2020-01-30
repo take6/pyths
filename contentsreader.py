@@ -39,4 +39,4 @@ def get_program_contents(date=TODAY, area=TOKYO):
 
     contents = requests.get(program_url, params=payload)
 
-    return contents
+    return contents.text
