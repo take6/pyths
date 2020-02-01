@@ -1,0 +1,33 @@
+# 自分用メモ
+
+## 動的に生成されるwebページの内容を取得する
+
+* webページの内容を取得して必要な情報を取り出すことを _スクレイピング_ というらしい。
+* 必要なモジュールは、`selenium`
+* `selenium`はブラウザ向けのドライバが必要なので別途インストールする必要がある
+* Chromeを使うことにする
+
+### `selenium`のインストール
+
+```
+$ pip install -U selenium
+Collecting selenium
+  Downloading selenium-3.141.0-py2.py3-none-any.whl (904 kB)
+     |████████████████████████████████| 904 kB 1.2 MB/s
+Requirement already satisfied, skipping upgrade: urllib3 in /Users/nakazato/pyvenv/SD/lib/python3.7/site-packages (from selenium) (1.25.8)
+Installing collected packages: selenium
+Successfully installed selenium-3.141.0
+```
+
+### Chromeのドライバインストール
+
+[Seleniumのドキュメント][1]にしたがって、[Googleのダウンロードサイト][2]からダウンロード、インストールする。Chromeの現在のバージョンは`79.0.3945.130`なので、このバージョン向けのドライバをインストール。OSごとにzipファイルが用意されているので適切なものを選ぶ。zipを展開すると、`chromedriver`的な名前の実行ファイルが出てくるのでこれを`PATH`で認識できるようにする。
+
+```
+$ mv chromedriver $HOME/bin
+$ which chromedriver
+/Users/username/bin/chromedriver
+```
+
+[1]:https://selenium.dev/selenium/docs/api/py/index.html
+[2]:https://sites.google.com/a/chromium.org/chromedriver/downloads
