@@ -1,5 +1,6 @@
-import requests
+from selenium import webdriver
 import time
+import urllib
 
 TODAY = 'today'
 TOKYO = 'tokyo'
@@ -37,6 +38,13 @@ def get_program_contents(date=TODAY, area=TOKYO):
         'a': area_id
     }
 
-    contents = requests.get(program_url, params=payload)
+    params = urllib.parse.urlencode(payload)
 
-    return contents.text
+    url = '{}?{}'.format(program_url, params)
+
+    options = webdriver.ChromeOptions()
+    options.headless = True
+    browser = webdriver.Chrome(options=options)
+    browser.get(url)
+
+    return browser.page_source
