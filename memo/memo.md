@@ -13,10 +13,12 @@ https://tv.yahoo.co.jp/listings?va=24&vd=0&d=20200201&a=23
 
 ここで、
 
-* d=20200128  - 日付
-* va=24  - 24時間表示
-* a=23  - 東京地域
-* vd=0  - 番組詳細を表示しない
+* `listings` - 地上波
+    * 例えばBS1はここが`listings/bs1`になる
+* `d=20200128`  - 日付
+* `va=24`  - 24時間表示
+* `a=23`  - 東京地域
+* `vd=0`  - 番組詳細を表示しない
 
 
 ## 動的に生成されるwebページの内容を取得する
@@ -50,3 +52,8 @@ $ which chromedriver
 
 [1]:https://selenium.dev/selenium/docs/api/py/index.html
 [2]:https://sites.google.com/a/chromium.org/chromedriver/downloads
+
+### 番組表の形式
+
+* 普通のテーブル
+* `<td rowspan="x">` の `x` は分単位
