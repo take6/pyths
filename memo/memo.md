@@ -53,7 +53,10 @@ $ which chromedriver
 [1]:https://selenium.dev/selenium/docs/api/py/index.html
 [2]:https://sites.google.com/a/chromium.org/chromedriver/downloads
 
-### 番組表の形式
+### 番組表の形式と欲しい情報
 
-* 普通のテーブル
-* `<td rowspan="x">` の `x` は分単位
+* 番組表は普通のテーブル: `<div id="tvpgm">`
+* 番組名: `<td>`タグの値で、`<a href="..." class="title ...">タイトル</a>`の部分（`<wbr>`で区切られている）
+* チャンネル: `<td>`タグの値で、`<a data-ylk="slk:tvttl; pos: N">`の`N`がチャンネル
+* 放送開始時刻: `<td>`タグの値で、`<span class="time">HH:MM</span>` の部分
+* 放送時間: `<td rowspan="x">` の `x` は分単位での放送時間
