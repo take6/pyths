@@ -22,7 +22,7 @@ def date2str(date=TODAY):
         return datestr
 
 
-def get_program_contents(date=TODAY, area=TOKYO):
+def get_url(date=TODAY, area=TOKYO):
     program_url = 'https://tv.yahoo.co.jp/listings'
 
     datestring = date2str(date)
@@ -40,11 +40,15 @@ def get_program_contents(date=TODAY, area=TOKYO):
 
     params = urllib.parse.urlencode(payload)
 
-    url = '{}?{}'.format(program_url, params)
+    return '{}?{}'.format(program_url, params)
+
+
+def get_page_contents(date=TODAY, area=TOKYO):
+    url = get_url(date=date, area=area)
 
     options = webdriver.ChromeOptions()
     options.headless = True
     browser = webdriver.Chrome(options=options)
     browser.get(url)
 
-    return browser.page_source
+    return browser.get_element_by_tag_name('html')
