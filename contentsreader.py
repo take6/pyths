@@ -1,4 +1,4 @@
-import selenium
+from selenium import webdriver
 import time
 import urllib
 
@@ -46,9 +46,9 @@ def get_url(date=TODAY, area=TOKYO):
 def get_page_contents(date=TODAY, area=TOKYO):
     url = get_url(date=date, area=area)
 
-    options = selenium.webdriver.ChromeOptions()
+    options = webdriver.ChromeOptions()
     options.headless = True
-    browser = selenium.webdriver.Chrome(options=options)
+    browser = webdriver.Chrome(options=options)
     browser.get(url)
 
-    return browser.get_element_by_tag_name('html')
+    return browser.find_element_by_tag_name('html')
