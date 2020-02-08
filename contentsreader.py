@@ -1,17 +1,25 @@
+import datetime
 from selenium import webdriver
 import time
 import urllib
 
 TODAY = 'today'
+TOMORROW = 'tomorrow'
 TOKYO = 'tokyo'
 
 AREA_MAP = {'tokyo': '23'}
 
 
-def date2str(date=TODAY):
+def date2str(date=TOMORROW):
     datestr = str(date)
     if datestr == TODAY:
         return time.strftime('%Y%m%d', time.localtime())
+    elif datestr == TOMORROW:
+        t = time.localtime()
+        today = datetime.datetime(year=t.tm_year, month=t.tm_mon, day=t.tm_mday)
+        oneday = datetime.timedelta(days=1)
+        tomorrow = today + oneday
+        return tomorrow.strftime('%Y%m%d')
     else:
         try:
             # test if given value is compatible with the format
@@ -22,7 +30,7 @@ def date2str(date=TODAY):
         return datestr
 
 
-def get_url(date=TODAY, area=TOKYO):
+def get_url(date=TOMORROW, area=TOKYO):
     program_url = 'https://tv.yahoo.co.jp/listings'
 
     datestring = date2str(date)
@@ -35,7 +43,8 @@ def get_url(date=TODAY, area=TOKYO):
         'va': '24',  # 24時間表示
         'vd': '0',  # 番組詳細を表示しない
         'd': datestring,
-        'a': area_id
+        'a': area_id,
+        'st': '5'  # 5時を先頭に
     }
 
     params = urllib.parse.urlencode(payload)
