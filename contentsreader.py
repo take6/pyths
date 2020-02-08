@@ -52,7 +52,7 @@ def get_url(date=TOMORROW, area=TOKYO):
     return '{}?{}'.format(program_url, params)
 
 
-def get_page_contents(date=TODAY, area=TOKYO):
+def get_page_contents(date=TOMORROW, area=TOKYO):
     url = get_url(date=date, area=area)
 
     options = webdriver.ChromeOptions()
