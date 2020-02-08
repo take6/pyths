@@ -32,7 +32,7 @@ def get_start_time(element):
     except Exception:
         print('ERROR! <{} class="{}"'.format(element.tag_name, element.get_attribute('class')))
     start_time = TimeRep(time_element.text)
-    return start_time
+    return start_time.asstring()
 
 
 def get_channel(element):
