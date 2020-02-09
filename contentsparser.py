@@ -42,8 +42,10 @@ def print_program(desc):
 def get_start_time(element):
     try:
         time_element = element.find_element_by_class_name('time')
-    except Exception:
+    except Exception as e:
         print('ERROR! <{} class="{}"'.format(element.tag_name, element.get_attribute('class')))
+        print(element.text)
+        print(str(e))
     start_time = TimeRep(time_element.text)
     return start_time.asstring()
 
@@ -51,8 +53,10 @@ def get_start_time(element):
 def get_channel(element):
     try:
         title_element = element.find_element_by_tag_name('a')
-    except Exception:
+    except Exception as e:
         print('ERROR! <{} class="{}"'.format(element.tag_name, element.get_attribute('class')))
+        print(element.text)
+        print(str(e))
     data_ylk = title_element.get_attribute('data-ylk')
     channel = -1
     if data_ylk is not None:
@@ -70,13 +74,19 @@ def get_channel(element):
 def get_title(element):
     try:
         title_element = element.find_element_by_tag_name('a')
-    except Exception:
+    except Exception as e:
         print('ERROR! <{} class="{}"'.format(element.tag_name, element.get_attribute('class')))
+        print(element.text)
+        print(str(e))
     title = title_element.text
     return title
 
 
 def element2description(element):
+    if element.text.find('番組のデータがありません') >= 0:
+        print('ERRRRRRRRRROR!')
+        return None
+
     start_time = get_start_time(element)
     channel = get_channel(element)
     title = get_title(element)
@@ -120,4 +130,6 @@ def gen_programs(program_table):
     _gen = filter(filter_cell, program_table.find_elements_by_class_name('turnup'))
     for cell in _gen:
         program = cell.find_element_by_class_name('detail')
-        yield element2description(program)
+        desc =  element2description(program)
+        if desc is not None:
+            yield desc
