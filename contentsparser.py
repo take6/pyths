@@ -22,6 +22,19 @@ ProgramDescription = collections.namedtuple(
     )
 
 
+StationRep = collections.namedtuple(
+    'StationRep',
+    ['channel', 'name']
+)
+
+
+def str2StationRep(s):
+    x = s.split('\n')
+    assert len(x) == 2
+    channel = int(x[0].strip('ch'))
+    return StationRep(channel=channel, name=x[1])
+
+
 def print_program(desc):
     print('{}ch {}~ {}'.format(desc.channel, desc.start_time, desc.title))
 
@@ -69,6 +82,16 @@ def element2description(element):
     title = get_title(element)
     summary = 'dummy'
     return ProgramDescription(channel=channel, start_time=start_time, title=title, summary=summary)
+
+
+def get_channel_map(html_element):
+    stations = html_element.find_elements_by_class_name('station')
+    assert len(stations) == 16
+    num_stations = len(stations) // 2
+    channel_map = dict(
+        (i + 1, str2StationRep(s.text)) for i, s in enumerate(stations[:num_stations])
+    )
+    return channel_map
 
 
 def get_program_table(html_element):
