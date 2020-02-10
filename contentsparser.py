@@ -50,7 +50,7 @@ def get_start_time(element):
     return start_time.asstring()
 
 
-def get_channel(element):
+def get_channel(element, channel_map):
     try:
         title_element = element.find_element_by_tag_name('a')
     except Exception as e:
@@ -64,7 +64,9 @@ def get_channel(element):
         gen_pos = filter(lambda x: x.strip().startswith('pos'), styles)
         try:
             pos = next(gen_pos)
-            channel = int(pos.split(':')[1])
+            channel_id = int(pos.split(':')[1])
+            assert channel_id in channel_map
+            channel = channel_map[channel_id].channel
         except Exception as e:
             print('ERROR! {}'.format(str(e)))
 
@@ -82,13 +84,13 @@ def get_title(element):
     return title
 
 
-def element2description(element):
+def element2description(element, channel_map):
     if element.text.find('番組のデータがありません') >= 0:
         print('ERRRRRRRRRROR!')
         return None
 
     start_time = get_start_time(element)
-    channel = get_channel(element)
+    channel = get_channel(element, channel_map)
     title = get_title(element)
     summary = 'dummy'
     return ProgramDescription(channel=channel, start_time=start_time, title=title, summary=summary)
@@ -122,14 +124,19 @@ def get_program_table(html_element):
 
 
 def filter_cell(cell):
-    print(cell.tag_name)
     return cell.tag_name == 'td'
 
 
-def gen_programs(program_table):
+def gen_program(program_table, channel_map):
     _gen = filter(filter_cell, program_table.find_elements_by_class_name('turnup'))
     for cell in _gen:
         program = cell.find_element_by_class_name('detail')
-        desc =  element2description(program)
+        desc = element2description(program, channel_map)
         if desc is not None:
             yield desc
+
+
+def gen_program_record(html_element):
+    channel_map = get_channel_map(html_element)
+    program_table = get_program_table(html_element)
+    return gen_program(program_table, channel_map)
