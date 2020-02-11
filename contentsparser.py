@@ -47,7 +47,7 @@ def get_start_time(element):
         print(element.text)
         print(str(e))
     start_time = TimeRep(time_element.text)
-    return start_time.asstring()
+    return start_time
 
 
 def get_station(element, channel_map):
@@ -85,11 +85,17 @@ def get_title(element):
 
 
 def element2description(element, channel_map):
+    # exclude non-program contents
     if element.text.find('番組のデータがありません') >= 0 or element.text.find('放送休止') >= 0:
         return None
 
     start_time = get_start_time(element)
     station = get_station(element, channel_map)
+
+    # exclude programs earlier than 4am
+    if start_time.asint() < 240:
+        return None
+
     title = get_title(element)
     summary = 'dummy'
     return ProgramDescription(station=station, start_time=start_time, title=title, summary=summary)
