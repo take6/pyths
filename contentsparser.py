@@ -18,7 +18,7 @@ class TimeRep(object):
 
 ProgramDescription = collections.namedtuple(
     'ProgramDescription',
-    ['channel', 'start_time', 'title', 'summary']
+    ['station', 'start_time', 'title', 'summary']
     )
 
 
@@ -36,7 +36,7 @@ def str2StationRep(s):
 
 
 def print_program(desc):
-    print('{}ch {}~ {}'.format(desc.channel, desc.start_time, desc.title))
+    print('{}ch {}~ {}'.format(desc.channel.channel, desc.start_time, desc.title))
 
 
 def get_start_time(element):
@@ -50,7 +50,7 @@ def get_start_time(element):
     return start_time.asstring()
 
 
-def get_channel(element, channel_map):
+def get_station(element, channel_map):
     try:
         title_element = element.find_element_by_tag_name('a')
     except Exception as e:
@@ -58,7 +58,7 @@ def get_channel(element, channel_map):
         print(element.text)
         print(str(e))
     data_ylk = title_element.get_attribute('data-ylk')
-    channel = -1
+    station = None
     if data_ylk is not None:
         styles = data_ylk.split(';')
         gen_pos = filter(lambda x: x.strip().startswith('pos'), styles)
@@ -66,11 +66,11 @@ def get_channel(element, channel_map):
             pos = next(gen_pos)
             channel_id = int(pos.split(':')[1])
             assert channel_id in channel_map
-            channel = channel_map[channel_id].channel
+            station = channel_map[channel_id]
         except Exception as e:
             print('ERROR! {}'.format(str(e)))
 
-    return channel
+    return station
 
 
 def get_title(element):
@@ -90,10 +90,10 @@ def element2description(element, channel_map):
         return None
 
     start_time = get_start_time(element)
-    channel = get_channel(element, channel_map)
+    station = get_station(element, channel_map)
     title = get_title(element)
     summary = 'dummy'
-    return ProgramDescription(channel=channel, start_time=start_time, title=title, summary=summary)
+    return ProgramDescription(station=station, start_time=start_time, title=title, summary=summary)
 
 
 def get_channel_map(html_element):
