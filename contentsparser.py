@@ -85,8 +85,7 @@ def get_title(element):
 
 
 def element2description(element, channel_map):
-    if element.text.find('番組のデータがありません') >= 0:
-        print('ERRRRRRRRRROR!')
+    if element.text.find('番組のデータがありません') >= 0 or element.text.find('放送休止') >= 0:
         return None
 
     start_time = get_start_time(element)
