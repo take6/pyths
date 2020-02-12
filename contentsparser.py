@@ -18,7 +18,7 @@ class TimeRep(object):
 
 ProgramDescription = collections.namedtuple(
     'ProgramDescription',
-    ['station', 'start_time', 'title', 'summary']
+    ['station', 'start_time', 'duration', 'title', 'summary']
     )
 
 
@@ -98,7 +98,12 @@ def element2description(element, channel_map):
 
     title = get_title(element)
     summary = 'dummy'
-    return ProgramDescription(station=station, start_time=start_time, title=title, summary=summary)
+    return ProgramDescription(
+        station=station,
+        start_time=start_time,
+        duration=0,
+        title=title,
+        summary=summary)
 
 
 def get_channel_map(html_element):
