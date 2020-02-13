@@ -2,6 +2,7 @@ import collections
 import numpy
 
 from .contentsparser import ProgramDescription
+from . import util
 
 
 def classify_by_channel(records):
@@ -56,3 +57,12 @@ def add_duration(records):
     records[-1] = set_duration(records[-1], duration)
 
     return records
+
+
+def export(program_list, outfile=None):
+    if outfile is None:
+        # default file name is "progYYYYMMDD.txt"
+        outfile = 'prog{}.txt'.format(util.str_tomorrow())
+
+    with open(outfile, 'w') as f:
+        f.write('こんにちは！\n')
