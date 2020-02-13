@@ -1,7 +1,8 @@
-import datetime
 from selenium import webdriver
 import time
 import urllib
+
+from . import util
 
 TODAY = 'today'
 TOMORROW = 'tomorrow'
@@ -13,13 +14,9 @@ AREA_MAP = {'tokyo': '23'}
 def date2str(date=TOMORROW):
     datestr = str(date)
     if datestr == TODAY:
-        return time.strftime('%Y%m%d', time.localtime())
+        return util.str_today()
     elif datestr == TOMORROW:
-        t = time.localtime()
-        today = datetime.datetime(year=t.tm_year, month=t.tm_mon, day=t.tm_mday)
-        oneday = datetime.timedelta(days=1)
-        tomorrow = today + oneday
-        return tomorrow.strftime('%Y%m%d')
+        return util.str_tomorrow()
     else:
         try:
             # test if given value is compatible with the format
