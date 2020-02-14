@@ -60,9 +60,21 @@ def add_duration(records):
 
 
 def export(program_list, outfile=None):
+    tomorrow = util.str_tomorrow()
+
     if outfile is None:
         # default file name is "progYYYYMMDD.txt"
-        outfile = 'prog{}.txt'.format(util.str_tomorrow())
+        outfile = 'prog{}.csv'.format(tomorrow)
 
     with open(outfile, 'w') as f:
-        f.write('こんにちは！\n')
+        for station, programs in program_list.items():
+            channel = station.channel
+            for program in programs:
+                start_time = program.start_time.asstring()
+                duration = program.duration
+                title = program.title
+                is_ths = 0  # default is False
+                row = '{}\n'.format(
+                    ','.join(map(str, [tomorrow, channel, start_time, duration, title, is_ths]))
+                )
+                f.write(row)
