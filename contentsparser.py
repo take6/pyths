@@ -93,7 +93,11 @@ def element2description(element, channel_map):
     station = get_station(element, channel_map)
 
     # exclude programs earlier than 4am
-    if start_time.asint() < 240:
+    if start_time.asint() < 4 * 60:
+        return None
+
+    # exclude programs later than 26h
+    if start_time.asint() > 26 * 60:
         return None
 
     title = get_title(element)
