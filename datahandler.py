@@ -64,7 +64,7 @@ def add_duration(records):
 
     # set dummy duration for the last record
     start = records[-1].start_time.asint()
-    duration = start % 60
+    duration = 60 - start % 60
     if duration == 0:
         duration = 60
     records[-1] = set_duration(records[-1], duration, next_day=next_day)
