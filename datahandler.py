@@ -48,7 +48,7 @@ def set_duration(record, duration, next_day=False):
 def add_duration(records):
     next_day = False
 
-    for i in range(len(records) - 2):
+    for i in range(len(records) - 1):
         prog_now = records[i]
         prog_next = records[i + 1]
         start = prog_now.start_time.asint() % (24 * 60)
