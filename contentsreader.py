@@ -10,7 +10,7 @@ TOKYO = 'tokyo'
 
 AREA_MAP = {'tokyo': '23'}
 
-DEBUG = True
+DEBUG = False 
 
 
 def date2str(date=TOMORROW):
