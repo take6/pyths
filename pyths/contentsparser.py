@@ -120,18 +120,10 @@ def get_channel_map(soup):
     return channel_map
 
 
-def get_program_table(html_element):
-    program_list = filter(
-        lambda x: x.get_attribute('id') == 'tvpgm',
-        html_element.find_elements_by_tag_name('div')
-        )
+def get_program_table(soup):
+    program = soup.find('div', id='tvpgm')
 
-    try:
-        program_frame = next(program_list)
-    except StopIteration:
-        raise AttributeError('No TV program is not available')
-
-    tables = program_frame.find_elements_by_tag_name('table')
+    tables = program.find_all('table')
     assert len(tables) == 3
 
     return tables[-1]
