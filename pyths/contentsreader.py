@@ -10,7 +10,7 @@ TOKYO = 'tokyo'
 
 AREA_MAP = {'tokyo': '23'}
 
-DEBUG = False 
+DEBUG = True
 
 
 def date2str(date=TOMORROW):
@@ -59,8 +59,12 @@ def get_page_contents(date=TOMORROW, area=TOKYO):
     browser = webdriver.Chrome(options=options)
     browser.get(url)
 
+    page_source = browser.page_source
+
     if DEBUG:
         with open('prog{}.html'.format(util.str_tomorrow()), 'w') as f:
-            f.write(browser.page_source)
+            f.write(page_source)
 
-    return browser.find_element_by_tag_name('html')
+    browser.quit()
+
+    return page_source
