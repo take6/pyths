@@ -41,9 +41,12 @@ def print_program(desc):
 
 def get_start_time(element):
     try:
-        time_element = element.find_element_by_class_name('time')
+        time_element = element.find(class_='time')
     except Exception as e:
-        print('ERROR! <{} class="{}"'.format(element.tag_name, element.get_attribute('class')))
+        print('ERROR! <{} class="{}"'.format(
+            element.name,
+            element.get('class')[0])
+        )
         print(element.text)
         print(str(e))
     start_time = TimeRep(time_element.text)
@@ -52,12 +55,15 @@ def get_start_time(element):
 
 def get_station(element, channel_map):
     try:
-        title_element = element.find_element_by_tag_name('a')
+        title_element = element.find('a', class_='title')
     except Exception as e:
-        print('ERROR! <{} class="{}"'.format(element.tag_name, element.get_attribute('class')))
+        print('ERROR! <{} class="{}"'.format(
+            element.name,
+            element.get('class')[0])
+        )
         print(element.text)
         print(str(e))
-    data_ylk = title_element.get_attribute('data-ylk')
+    data_ylk = title_element.get('data-ylk')
     station = None
     if data_ylk is not None:
         styles = data_ylk.split(';')
@@ -75,9 +81,12 @@ def get_station(element, channel_map):
 
 def get_title(element):
     try:
-        title_element = element.find_element_by_tag_name('a')
+        title_element = element.find('a', class_='title')
     except Exception as e:
-        print('ERROR! <{} class="{}"'.format(element.tag_name, element.get_attribute('class')))
+        print('ERROR! <{} class="{}"'.format(
+            element.name,
+            element.get('class')[0])
+        )
         print(element.text)
         print(str(e))
     title = title_element.text
@@ -134,16 +143,16 @@ def filter_cell(cell):
 
 
 def gen_program(program_table, channel_map):
-    _gen = filter(filter_cell, program_table.find_elements_by_class_name('turnup'))
+    _gen = program_table.find_all('td', class_='turnup')
     for cell in _gen:
-        program = cell.find_element_by_class_name('detail')
+        program = cell.find(class_='detail')
         desc = element2description(program, channel_map)
         if desc is not None:
             yield desc
 
 
 def gen_program_record(html_doc):
-    soup = BeautifulSoup(html_doc)
+    soup = BeautifulSoup(html_doc, features='html.parser')
     channel_map = get_channel_map(soup)
-    program_table = get_program_table(html_element)
+    program_table = get_program_table(soup)
     return gen_program(program_table, channel_map)
