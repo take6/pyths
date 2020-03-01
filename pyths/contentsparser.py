@@ -1,5 +1,5 @@
 import collections
-
+from bs4 import BeautifulSoup
 
 class TimeRep(object):
     def __init__(self, timestr):
@@ -29,7 +29,7 @@ StationRep = collections.namedtuple(
 
 
 def str2StationRep(s):
-    x = s.split('\n')
+    x = s.split('\n')[:2]
     assert len(x) == 2
     channel = int(x[0].strip('ch'))
     return StationRep(channel=channel, name=x[1])
@@ -110,12 +110,12 @@ def element2description(element, channel_map):
         summary=summary)
 
 
-def get_channel_map(html_element):
-    stations = html_element.find_elements_by_class_name('station')
+def get_channel_map(soup):
+    stations = soup.find_all('td', class_='station')
     assert len(stations) == 16
     num_stations = len(stations) // 2
     channel_map = dict(
-        (i + 1, str2StationRep(s.text)) for i, s in enumerate(stations[:num_stations])
+        (i + 1, str2StationRep(s.get_text(separator='\n'))) for i, s in enumerate(stations[:num_stations])
     )
     return channel_map
 
@@ -150,7 +150,8 @@ def gen_program(program_table, channel_map):
             yield desc
 
 
-def gen_program_record(html_element):
-    channel_map = get_channel_map(html_element)
+def gen_program_record(html_doc):
+    soup = BeautifulSoup(html_doc)
+    channel_map = get_channel_map(soup)
     program_table = get_program_table(html_element)
     return gen_program(program_table, channel_map)
