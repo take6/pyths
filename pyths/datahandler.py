@@ -72,12 +72,13 @@ def add_duration(records):
     return records
 
 
-def export(program_list, outfile=None):
-    tomorrow = util.str_tomorrow()
+def export(program_list, outfile=None, datestr=None):
+    if datestr is None:
+        datestr = util.str_tomorrow()
 
     if outfile is None:
         # default file name is "progYYYYMMDD.txt"
-        outfile = 'prog{}.csv'.format(tomorrow)
+        outfile = 'prog{}.csv'.format(datestr)
 
     with open(outfile, 'w') as f:
         for station, programs in program_list.items():
@@ -90,6 +91,6 @@ def export(program_list, outfile=None):
                 is_ths = 0  # default is False
                 is_suspense = 0  # default is False
                 row = '{}\n'.format(
-                    ','.join(map(str, [tomorrow, channel, start_time, duration, title, summary, is_suspense, is_ths]))
+                    ','.join(map(str, [datestr, channel, start_time, duration, title, summary, is_suspense, is_ths]))
                 )
                 f.write(row)
