@@ -90,13 +90,13 @@ def get_title(element):
         )
         print(element.text)
         print(str(e))
-    title = title_element.text
+    title = title_element.text.replace(',', '.')
     return title
 
 
 def get_summary(element, start_time, title):
     pos = element.text.find(title) + len(title) + 1
-    return element.text[pos:].rstrip('.')
+    return element.text[pos:].rstrip('.').replace(',', '.')
 
 
 def element2description(element, channel_map):
