@@ -86,8 +86,10 @@ def export(program_list, outfile=None):
                 start_time = program.start_time.asstring()
                 duration = program.duration
                 title = program.title
+                summary = program.summary
                 is_ths = 0  # default is False
+                is_suspense = 0  # default is False
                 row = '{}\n'.format(
-                    ','.join(map(str, [tomorrow, channel, start_time, duration, title, is_ths]))
+                    ','.join(map(str, [tomorrow, channel, start_time, duration, title, summary, is_suspense, is_ths]))
                 )
                 f.write(row)
