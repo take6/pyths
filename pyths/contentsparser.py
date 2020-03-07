@@ -1,6 +1,7 @@
 import collections
 from bs4 import BeautifulSoup
 
+
 class TimeRep(object):
     def __init__(self, timestr):
         self.__ts = timestr
@@ -93,6 +94,11 @@ def get_title(element):
     return title
 
 
+def get_summary(element, start_time, title):
+    pos = element.text.find(title) + len(title) + 1
+    return element.text[pos:].rstrip('.')
+
+
 def element2description(element, channel_map):
     # exclude non-program contents
     if element.text.find('番組のデータがありません') >= 0 or element.text.find('放送休止') >= 0:
@@ -110,7 +116,7 @@ def element2description(element, channel_map):
     #     return None
 
     title = get_title(element)
-    summary = 'dummy'
+    summary = get_summary(element, start_time, title)
     return ProgramDescription(
         station=station,
         start_time=start_time,
