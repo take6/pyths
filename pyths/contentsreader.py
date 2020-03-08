@@ -40,7 +40,7 @@ def get_url(date=TOMORROW, area=TOKYO):
 
     payload = {
         'va': '24',  # 24時間表示
-        'vd': '0',  # 番組詳細を表示しない
+        'vb': '0',  # 番組詳細を表示しない
         'd': datestring,
         'a': area_id,
         'st': '5'  # 5時を先頭に
