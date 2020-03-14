@@ -145,14 +145,18 @@ def get_program_table(soup):
     return tables[-1]
 
 
-def filter_cell(cell):
-    return cell.tag_name == 'td'
+def get_program_list(program_table):
+    return program_table.find_all('td', class_='turnup')
+
+
+def get_program_element(program):
+    return program.find(class_='detail')
 
 
 def gen_program(program_table, channel_map):
-    _gen = program_table.find_all('td', class_='turnup')
-    for cell in _gen:
-        program = cell.find(class_='detail')
+    plist = get_program_list(program_table)
+    for cell in plist:
+        program = get_program_element(cell)
         desc = element2description(program, channel_map)
         if desc is not None:
             yield desc
