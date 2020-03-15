@@ -4,5 +4,5 @@ setuptools.setup(
     name='pyths',
     version='0.0.0',
     description='2H Suspense Drama',
-    packages=['pyths']
+    packages=setuptools.find_packages()
 )
