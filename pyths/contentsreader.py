@@ -2,13 +2,13 @@ from selenium import webdriver
 import time
 import urllib
 
+from .config import CONFIG
 from . import util
 
 TODAY = 'today'
 TOMORROW = 'tomorrow'
-TOKYO = 'tokyo'
 
-AREA_MAP = {'tokyo': '23'}
+AREA_LIST = {'tokyo': '23'}
 
 DEBUG = True
 
@@ -29,12 +29,14 @@ def date2str(date=TOMORROW):
         return datestr
 
 
-def get_url(date=TOMORROW, area=TOKYO):
+def get_url(date=TOMORROW, area=None):
     program_url = 'https://tv.yahoo.co.jp/listings'
 
     datestring = date2str(date)
 
-    area_id = AREA_MAP.get(area, None)
+    if area is None:
+        area = CONFIG['tvprogram']['area'].lower()
+    area_id = AREA_LIST.get(area, None)
 
     assert area_id is not None
 
@@ -51,7 +53,7 @@ def get_url(date=TOMORROW, area=TOKYO):
     return '{}?{}'.format(program_url, params)
 
 
-def get_page_contents(date=TOMORROW, area=TOKYO):
+def get_page_contents(date=TOMORROW, area=None):
     url = get_url(date=date, area=area)
 
     options = webdriver.ChromeOptions()
