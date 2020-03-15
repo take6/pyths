@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import urllib
-import requests
 from bs4 import BeautifulSoup
 
 from pyths.config import CONFIG
@@ -17,7 +16,9 @@ def split(sentence, appid=appid, results='ma', appfilter='1|2|3|4|5|9|10'):
         'filter': appfilter,
         'sentence': sentence,
     })
-    results = requests.get(pageurl, params)
-    soup = BeautifulSoup(results.content, features='html.parser')
+    url = '{}?{}'.format(pageurl, params)
+    with urllib.request.urlopen(url) as r:
+        content = r.read()
+    soup = BeautifulSoup(content, features='html.parser')
 
     return [w.surface.string for w in soup.ma_result.word_list]
