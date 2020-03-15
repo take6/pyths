@@ -6,3 +6,7 @@ servide = 'Yahoo! Japan'
 baseurl = 'https://tv.yahoo.co.jp/listings'
 area = 'Tokyo'
 
+[morphological]
+service = 'Yahoo! Japan'
+baseurl = 'http://jlp.yahooapis.jp/MAService/V1/parse'
+appid = 'your-app-id'
