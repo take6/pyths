@@ -42,10 +42,11 @@ def get_url(date=TOMORROW, area=None):
 
     payload = {
         'va': '24',  # 24時間表示
-        'vb': '0',  # 番組詳細を表示しない
+        'vb': '１',  # 番組詳細を表示しない
         'd': datestring,
         'a': area_id,
-        'st': '5'  # 5時を先頭に
+        'st': '5',  # 5時を先頭に
+        've': '0',  # 「見たい」ボタン不要
     }
 
     params = urllib.parse.urlencode(payload)
