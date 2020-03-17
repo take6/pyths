@@ -12,6 +12,23 @@ def getwords(doc):
 
 class NaiveBayes(object):
     def __init__(self):
+        self._machine = NaiveBayesCore()
+
+    def train(self, dataframe):
+        summary = dataframe['Summary']  # Summary column
+        category = dataframe['Suspense']  # Suspense flag column
+        for doc, cat in zip(summary, category):
+            self._machine.train(doc, cat)
+
+    def export_model(self, filename):
+        self._machine.export_model(filename)
+
+    def load_model(self, filename):
+        self._machine.load_model(filename)
+
+
+class NaiveBayesModel(object):
+    def __init__(self):
         # 単語の集合
         self.vocabularies = set()
 
@@ -20,6 +37,23 @@ class NaiveBayes(object):
 
         # カテゴリ毎の文章数
         self.catcount = {}
+
+
+class NaiveBayesCore(object):
+    @property
+    def vocabularies(self):
+        return self._model.vocabularies
+
+    @property
+    def wordcount(self):
+        return self._model.wordcount
+
+    @property
+    def catcount(self):
+        return self._model.catcount
+
+    def __init__(self):
+        self._model = NaiveBayesModel()
 
     def wordcountup(self, word, cat):
         catdict = self.wordcount.setdefault(cat, {})
