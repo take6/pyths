@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+import pickle
 import sys
 # Yahoo! 形態素解析
 from . import morphological
@@ -28,6 +29,18 @@ class NaiveBayes(object):
 
 
 class NaiveBayesModel(object):
+    @classmethod
+    def load_model(cls, filename):
+        with open(filename, 'rb') as f:
+            name, attr = pickle.load(f)
+
+        assert name == cls.__name__
+        model = cls()
+        for k, v in attr.items():
+            setattr(model, k, v)
+
+        return model
+
     def __init__(self):
         # 単語の集合
         self.vocabularies = set()
@@ -37,6 +50,13 @@ class NaiveBayesModel(object):
 
         # カテゴリ毎の文章数
         self.catcount = {}
+
+    def export_model(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(
+                (self.__class__.__name__, self.__dict__),
+                f
+            )
 
 
 class NaiveBayesCore(object):
@@ -54,6 +74,12 @@ class NaiveBayesCore(object):
 
     def __init__(self):
         self._model = NaiveBayesModel()
+
+    def export_model(self, filename):
+        self._model.export_model(filename)
+
+    def load_model(self, filename):
+        return NaiveBayesModel.load_model(filename)
 
     def wordcountup(self, word, cat):
         catdict = self.wordcount.setdefault(cat, {})
