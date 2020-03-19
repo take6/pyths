@@ -97,7 +97,13 @@ def get_title(element):
 def get_summary(element, start_time, title):
     #pos = element.text.find(title) + len(title) + 1
     #return element.text[pos:].rstrip('.').replace(',', '.')
-    return element.text
+    #return element.find('a').text
+    cpy = BeautifulSoup(str(element))
+    t = cpy.find('span', class_='time')
+    t.extract()
+    t = cpy.find('a')
+    t.extract()
+    return cpy.text
 
 
 def element2description(element, channel_map):
