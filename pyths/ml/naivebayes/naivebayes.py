@@ -16,9 +16,11 @@ class NaiveBayes(object):
         self._machine = NaiveBayesCore()
 
     def train(self, dataframe):
+        title = dataframe['Title']  # Title column
         summary = dataframe['Summary']  # Summary column
         category = dataframe['Suspense']  # Suspense flag column
-        for doc, cat in zip(summary, category):
+        for t, s, cat in zip(title, summary, category):
+            doc = t + ' ' + s
             self._machine.train(doc, cat)
 
     def export_model(self, filename):
