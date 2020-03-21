@@ -23,6 +23,26 @@ class NaiveBayes(object):
             doc = t + ' ' + s
             self._machine.train(doc, cat)
 
+    def categorize(self, dataframe):
+        title = dataframe['Title']
+        summary = dataframe['Summary']
+        category = dataframe['Suspense'].copy()
+        is_2hsuspense = dataframe['2HSuspense'].copy()
+        duration = dataframe['Duration']
+        threshold_2h = 100
+        for i in range(len(dataframe)):
+            doc = title[i] + ' ' + summary[i]
+            bestcat = self._machine.classifier(doc)
+            if bestcat == 1:
+                print('{} is suspense'.format(title[i]))
+                category[i] = bestcat
+                if duration[i] > threshold_2h:
+                    print('{} is 2H suspense'.format(title[i]))
+                    is_2hsuspense[i] = 1
+        dataframe.update(category)
+        dataframe.update(is_2hsuspense)
+        return dataframe
+
     def export_model(self, filename):
         self._machine.export_model(filename)
 
@@ -81,7 +101,7 @@ class NaiveBayesCore(object):
         self._model.export_model(filename)
 
     def load_model(self, filename):
-        return NaiveBayesModel.load_model(filename)
+        self._model = NaiveBayesModel.load_model(filename)
 
     def wordcountup(self, word, cat):
         catdict = self.wordcount.setdefault(cat, {})
