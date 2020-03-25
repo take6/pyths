@@ -30,7 +30,7 @@ class NaiveBayes(object):
         is_2hsuspense = dataframe['2HSuspense'].copy()
         duration = dataframe['Duration']
         threshold_2h = 100
-        for i in range(len(dataframe)):
+        for i in dataframe.index:
             doc = title[i] + ' ' + summary[i]
             bestcat = self._machine.classifier(doc)
             if bestcat == 1:
@@ -97,6 +97,9 @@ class NaiveBayesCore(object):
     def __init__(self):
         self._model = NaiveBayesModel()
 
+        # factor for additive smoothing
+        self.alpha = 1.0
+
     def export_model(self, filename):
         self._model.export_model(filename)
 
@@ -131,22 +134,12 @@ class NaiveBayesCore(object):
             return float(self.wordcount[cat][word])
         return 0.0
 
-    def additive_smoothing(self, wordcount):
-        # 加算スムージング
-        return wordcount + 1
-
     def wordprob(self, word, cat):
         # P(word|cat) を求める
-        # numerator = self.additive_smoothing(
-        #     self.incategory(word, cat)
-        # )
-        # denominator = sum(self.wordcount[cat].values()) \
-        #     + sum(map(self.additive_smoothing, [0 for _ in self.vocabularies]))
-        # return numerator / denominator
         prob = \
-            (self.incategory(word, cat) + 1.0) / \
+            (self.incategory(word, cat) + self.alpha) / \
             (sum(self.wordcount[cat].values()) +
-                len(self.vocabularies) * 1.0)
+                len(self.vocabularies) * self.alpha)
 
         return prob
 
