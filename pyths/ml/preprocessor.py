@@ -19,7 +19,8 @@ def drop_duplicate_rows(df, target=None):
 
 def preprocess(df):
     # only take programs with duration > 30min
-    no_short = drop_short_programs(df, threshold=30)
+    #no_short = drop_short_programs(df, threshold=30)
+    no_short = df
 
     # drop rows with duplicate title
     no_dup = drop_duplicate_rows(no_short, target='Title')
