@@ -33,9 +33,11 @@ class NaiveBayes(object):
         for i in dataframe.index:
             doc = title[i] + ' ' + summary[i]
             bestcat = self._machine.classifier(doc)
+            category[i] = bestcat
+            is_2hsuspense[i] = 0
+            print(f'{doc}: category {bestcat}')
             if bestcat == 1:
                 print('{} is suspense'.format(title[i]))
-                category[i] = bestcat
                 if duration[i] > threshold_2h:
                     print('{} is 2H suspense'.format(title[i]))
                     is_2hsuspense[i] = 1
@@ -94,11 +96,25 @@ class NaiveBayesCore(object):
     def catcount(self):
         return self._model.catcount
 
+    @property
+    def alpha(self):
+        if self._alpha is None:
+            nv = len(self._model.vocabularies)
+            if nv == 0:
+                return 1.0
+            else:
+                return 1.0 / nv
+        else:
+            return self._alpha
+
+    @alpha.setter
+    def alpha(self, value):
+        self._alpha = value
+
     def __init__(self):
         self._model = NaiveBayesModel()
 
-        # factor for additive smoothing
-        self.alpha = 1.0
+        self.alpha = None
 
     def export_model(self, filename):
         self._model.export_model(filename)
