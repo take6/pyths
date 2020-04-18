@@ -35,7 +35,7 @@ class NaiveBayes(object):
             bestcat = self._machine.classifier(doc)
             category[i] = bestcat
             is_2hsuspense[i] = 0
-            print(f'{doc}: category {bestcat}')
+            #print(f'{doc}: category {bestcat}')
             if bestcat == 1:
                 print('{} is suspense'.format(title[i]))
                 if duration[i] > threshold_2h:
@@ -178,7 +178,7 @@ class NaiveBayesCore(object):
         # カテゴリ毎に確率の対数を求める
         for cat in self.catcount.keys():
             prob = self.score(word, cat)
-            print('{}: prob={}'.format(cat, prob))
+            #print('{}: prob={}'.format(cat, prob))
             if prob > maxscore:
                 maxscore = prob
                 bestcat = cat
