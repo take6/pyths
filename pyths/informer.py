@@ -1,5 +1,8 @@
+from requests_oauthlib import OAuth1Session
 import pandas as pd
 import sys
+
+from pyths.config import CONFIG
 
 
 DF_HEADER = ['Date', 'Channel', 'Start', 'Duration', 'Title', 'Summary',
@@ -38,6 +41,7 @@ def generate_report(df, datestr):
 
 def push_report(msg):
     print(msg)
+    tweet(msg)
 
 
 def inform(filename):
@@ -46,3 +50,30 @@ def inform(filename):
     df = load_data(filename)
     report = generate_report(df, datestr)
     push_report(report)
+
+
+def get_destination(dst_name):
+    if 'messaging' in CONFIG:
+        destinations = CONFIG['messaging']
+        dst = destinations.get(dst_name, None)
+    else:
+        dst = None
+    return dst
+
+
+def tweet(msg):
+    dst = get_destination('twitter')
+    if dst is not None:
+        consumer_key = dst['consumer_key']
+        consumer_secret = dst['consumer_secret']
+        access_token = dst['access_token']
+        access_token_secret = dst['access_token_secret']
+        session = OAuth1Session(consumer_key, consumer_secret,
+                                access_token, access_token_secret)
+        url = dst['url']
+        params = {'status': msg}
+        res = session.post(url, params=params)
+        if res.status_code == 200:
+            print('TWEET: Success.')
+        else:
+            print('TWEET: Failed. : {}'.format(res.status_code))
