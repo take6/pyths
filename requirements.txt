@@ -3,3 +3,6 @@ numpy
 pandas
 selenium
 toml
+requests
+requests-oauthlib
+
