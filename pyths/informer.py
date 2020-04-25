@@ -32,9 +32,14 @@ def generate_report(df, datestr):
             contents += f'  {channel}ch {start_time} {title}\n'
 
     if len(contents) == 0:
-        report = f'{datestr} 2時間サスペンスはありません'
-    else:
-        report = f'{datestr}:\n' + contents
+        contents = ' 2時間サスペンスはありません\n'
+
+    assert len(datestr) == 8
+    year = datestr[0:4]
+    month = datestr[4:6].lstrip('0')
+    day = datestr[6:].lstrip('0')
+    date = f'{year}年{month}月{day}日'
+    report = f'{date}:\n' + contents
 
     return report
 
