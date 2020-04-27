@@ -34,6 +34,9 @@ def generate_report(df, datestr):
     if len(contents) == 0:
         contents = ' 2時間サスペンスはありません\n'
 
+    if not isinstance(datestr, str):
+        datestr = str(datestr)
+
     assert len(datestr) == 8
     year = datestr[0:4]
     month = datestr[4:6].lstrip('0')
