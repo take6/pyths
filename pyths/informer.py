@@ -1,5 +1,6 @@
 from requests_oauthlib import OAuth1Session
 import pandas as pd
+import os
 import sys
 
 from pyths.config import CONFIG
@@ -54,7 +55,7 @@ def push_report(msg):
 
 def inform(filename):
     # filename: progYYYYMMDD.csv
-    datestr = int(filename.replace('prog', '').replace('.csv', ''))
+    datestr = int(os.path.basename(filename).replace('prog', '').replace('.csv', ''))
     df = load_data(filename)
     report = generate_report(df, datestr)
     push_report(report)
