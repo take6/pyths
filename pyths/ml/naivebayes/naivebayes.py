@@ -31,6 +31,10 @@ class NaiveBayes(object):
         duration = dataframe['Duration']
         threshold_2h = 100
         for i in dataframe.index:
+            # categorize rows with duration > 45min
+            if duration[i] <= 45:
+                continue
+
             doc = title[i] + ' ' + summary[i]
             bestcat = self._machine.classifier(doc)
             category[i] = bestcat
