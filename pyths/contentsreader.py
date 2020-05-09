@@ -59,6 +59,7 @@ def get_page_contents(date=TOMORROW, area=None):
 
     options = webdriver.ChromeOptions()
     options.headless = True
+    options.add_argument('--no-sandbox')
     browser = webdriver.Chrome(options=options)
     browser.get(url)
 
