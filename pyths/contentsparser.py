@@ -173,3 +173,9 @@ def gen_program_record(html_doc):
     channel_map = get_channel_map(soup)
     program_table = get_program_table(soup)
     return gen_program(program_table, channel_map)
+
+
+def main(htmldata, csvdata):
+    with open(htmldata, 'r') as f:
+        html_doc = f.read()
+    return gen_program_record(html_doc)
