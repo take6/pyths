@@ -10,8 +10,6 @@ TOMORROW = 'tomorrow'
 
 AREA_LIST = {'tokyo': '23'}
 
-DEBUG = True
-
 
 def date2str(date=TOMORROW):
     datestr = str(date)
@@ -54,7 +52,7 @@ def get_url(date=TOMORROW, area=None):
     return '{}?{}'.format(program_url, params)
 
 
-def get_page_contents(date=TOMORROW, area=None):
+def get_page_contents(htmldata, date=TOMORROW, area=None):
     url = get_url(date=date, area=area)
 
     options = webdriver.ChromeOptions()
@@ -65,10 +63,16 @@ def get_page_contents(date=TOMORROW, area=None):
 
     page_source = browser.page_source
 
-    if DEBUG:
-        with open('prog{}.html'.format(util.str_tomorrow()), 'w') as f:
-            f.write(page_source)
+    if htmldata is None:
+        htmldata = 'prog{}.html'.format(util.str_tomorrow())
+
+    with open(htmldata, 'w') as f:
+        f.write(page_source)
 
     browser.quit()
 
     return page_source
+
+
+def main(htmldata=None, datestr=TOMORROW):
+    return get_page_contents(htmldata, datestr)
