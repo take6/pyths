@@ -94,3 +94,8 @@ def export(program_list, outfile=None, datestr=None):
                     ','.join(map(str, [datestr, channel, start_time, duration, title, summary, is_suspense, is_ths]))
                 )
                 f.write(row)
+
+
+def main(records, csvdata):
+    program_list = classify_by_channel(records)
+    export(program_list, outfile=csvdata)
