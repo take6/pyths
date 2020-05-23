@@ -55,8 +55,9 @@ def push_report(msg):
 
 def inform(filename):
     # filename: progYYYYMMDD.csv
-    datestr = int(os.path.basename(filename).replace('prog', '').replace('.csv', ''))
+    #datestr = int(os.path.basename(filename).replace('prog', '').replace('.csv', ''))
     df = load_data(filename)
+    datestr = df['Date'][0]
     report = generate_report(df, datestr)
     push_report(report)
 
@@ -86,3 +87,7 @@ def tweet(msg):
             print('TWEET: Success.')
         else:
             print('TWEET: Failed. : {}'.format(res.status_code))
+
+
+def main(csvdata):
+    inform(csvdata)
