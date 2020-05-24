@@ -3,7 +3,6 @@ import argparse
 from . import informer
 from . import contentsparser
 from . import contentsreader
-from . import datahandler
 from . import ml
 
 
@@ -25,8 +24,7 @@ def get(args):
 def parse(args):
     htmldata = args.htmldata
     csvdata = args.csvdata
-    records = contentsparser.main(htmldata=htmldata, csvdata=csvdata)
-    datahandler.main(records=records, csvdata=csvdata)
+    contentsparser.main(htmldata=htmldata, csvdata=csvdata)
 
 
 def categorize(args):
