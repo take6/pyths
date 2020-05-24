@@ -1,6 +1,7 @@
 import datetime
 import functools
 import time
+from selenium import webdriver
 
 
 def timeit(f):
@@ -25,3 +26,16 @@ def str_tomorrow():
     oneday = datetime.timedelta(days=1)
     tomorrow = today + oneday
     return tomorrow.strftime('%Y%m%d')
+
+
+def get_url(url):
+    options = webdriver.ChromeOptions()
+    options.headless = True
+    browser = webdriver.Chrome(options=options)
+    browser.get(url)
+
+    page_source = browser.page_source
+
+    browser.quit()
+
+    return page_source

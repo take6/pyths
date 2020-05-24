@@ -89,5 +89,17 @@ def tweet(msg):
             print('TWEET: Failed. : {}'.format(res.status_code))
 
 
-def main(csvdata):
+###
+def configure(parser):
+    parser.add_argument(
+        'csvdata',
+        help='name of CSV file')
+
+
+def get_help():
+    return 'report 2H suspense drama'
+
+
+def main(args):
+    csvdata = args.csvdata
     inform(csvdata)

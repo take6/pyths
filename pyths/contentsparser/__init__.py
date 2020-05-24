@@ -2,7 +2,26 @@ from .contentsparser import gen_program_record
 from .datahandler import classify_by_channel, export
 
 
-def main(htmldata, csvdata):
+###
+def configure(parser):
+    parser.add_argument(
+        'htmldata',
+        help='name of input HTML file name'
+    )
+    parser.add_argument(
+        'csvdata',
+        help='name of output CSV file name'
+    )
+
+
+def get_help():
+    return 'parse TV program'
+
+
+def main(args):
+    htmldata = args.htmldata
+    csvdata = args.csvdata
+
     with open(htmldata, 'r') as f:
         html_doc = f.read()
     records = gen_program_record(html_doc)

@@ -74,5 +74,25 @@ def get_page_contents(htmldata, date=TOMORROW, area=None):
     return page_source
 
 
-def main(htmldata=None, datestr=TOMORROW):
+###
+def configure(parser):
+    parser.add_argument(
+        'yyyymmdd',
+        help='date for TV program to get')
+    parser.add_argument(
+        'htmldata',
+        help='name of output HTML file name')
+
+
+def get_help():
+    return 'get TV program data as HTML'
+
+
+def main(args):
+    htmldata = args.htmldata
+
+    datestr = args.yyyymmdd
+    if datestr is None:
+        datestr = TOMORROW
+
     return get_page_contents(htmldata, datestr)
