@@ -36,8 +36,8 @@ def main():
     args = parser.parse_args()
     ret = invoke_subcommand(args)
 
-    if ret is not None:
-        print(f'subcommand returned {ret}')
+    #if ret is not None:
+    #    print(f'subcommand returned {ret}')
 
 
 # execute main function
