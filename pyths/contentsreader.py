@@ -59,17 +59,18 @@ def get_page_contents(htmldata, date=TOMORROW, area=None):
     options.headless = True
     options.add_argument('--no-sandbox')
     browser = webdriver.Chrome(options=options)
-    browser.get(url)
 
-    page_source = browser.page_source
+    try:
+        browser.get(url)
+        page_source = browser.page_source
+    finally:
+        browser.quit()
 
     if htmldata is None:
         htmldata = 'prog{}.html'.format(util.str_tomorrow())
 
     with open(htmldata, 'w') as f:
         f.write(page_source)
-
-    browser.quit()
 
     return page_source
 
@@ -95,4 +96,12 @@ def main(args):
     if datestr is None:
         datestr = TOMORROW
 
-    return get_page_contents(htmldata, datestr)
+    status = 0
+    ret = None
+    try:
+        ret = get_page_contents(htmldata, datestr)
+    except Exception as e:
+        print('ERROR: {}'.format(str(e)))
+        status = 1
+
+    return ret, status

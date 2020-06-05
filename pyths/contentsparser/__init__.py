@@ -22,8 +22,15 @@ def main(args):
     htmldata = args.htmldata
     csvdata = args.csvdata
 
-    with open(htmldata, 'r') as f:
-        html_doc = f.read()
-    records = gen_program_record(html_doc)
-    program_list = classify_by_channel(records)
-    export(program_list, outfile=csvdata)
+    status = 0
+    try:
+        with open(htmldata, 'r') as f:
+            html_doc = f.read()
+        records = gen_program_record(html_doc)
+        program_list = classify_by_channel(records)
+        export(program_list, outfile=csvdata)
+    except Exception as e:
+        print('ERROR: {}'.format(str(e)))
+        status = 1
+
+    return None, status

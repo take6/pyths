@@ -60,6 +60,7 @@ def inform(filename):
     datestr = df['Date'][0]
     report = generate_report(df, datestr)
     push_report(report)
+    return report
 
 
 def get_destination(dst_name):
@@ -102,4 +103,13 @@ def get_help():
 
 def main(args):
     csvdata = args.csvdata
-    inform(csvdata)
+
+    status = 0
+    report = None
+    try:
+        report = inform(csvdata)
+    except Exception as e:
+        print('ERROR: {}'.format(str(e)))
+        status = 1
+
+    return report, status

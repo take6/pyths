@@ -25,7 +25,14 @@ def main(args):
     csvdata = args.csvdata
     modeldata = args.modeldata
 
-    df = load_data(csvdata)
-    machine = load_model(modeldata)
-    categorized = machine.categorize(df)
-    save_data(categorized, csvdata, overwrite=True)
+    status = 0
+    try:
+        df = load_data(csvdata)
+        machine = load_model(modeldata)
+        categorized = machine.categorize(df)
+        save_data(categorized, csvdata, overwrite=True)
+    except Exception as e:
+        print('ERROR: {}'.format(str(e)))
+        status = 1
+
+    return None, status
