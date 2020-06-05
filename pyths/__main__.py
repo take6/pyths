@@ -1,8 +1,8 @@
 import argparse
 
-from . import informer
 from . import contentsparser
 from . import contentsreader
+from . import informer
 from . import ml
 
 
