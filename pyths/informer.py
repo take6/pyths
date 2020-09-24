@@ -35,6 +35,8 @@ def generate_report(df, datestr):
     if len(contents) == 0:
         contents = ' 2時間サスペンスはありません\n'
 
+    contents += '#2時間サスペンス\n'
+
     if not isinstance(datestr, str):
         datestr = str(datestr)
 
